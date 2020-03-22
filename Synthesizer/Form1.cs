@@ -16,7 +16,6 @@ namespace Synthesizer
         public Form1()
         {
             InitializeComponent();
-            BuildKeyboardGrid();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -71,11 +70,6 @@ namespace Synthesizer
             new System.Media.SoundPlayer(mStrm).Play();
             writer.Close();
             mStrm.Close();
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

@@ -1,43 +1,59 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
-namespace Synthesizer
+namespace Synthesizer.Views
 {
-    partial class Form1 // todo: refactoring
+    class KeyboardGrid : Panel
     {
-        private readonly int SegmentWidth = 30;
-        private readonly int SegmentHeight = 10;
-        private readonly int SegmentVerticalCount = 20;
-        private readonly int SegmentHorizontalCont = 10;
+        public KeyboardGrid()
+        {
+            AutoScroll = true;
+            BuildKeyboardGrid();
+        }
 
         private void BuildKeyboardGrid()
         {
-            for (int w = 0; w < SegmentHorizontalCont; w++)
+            SuspendLayout();
+            BuildKeyboardHeader();
+
+            const int totalHorizontalSegments = 30;
+            for (int w = 0; w < totalHorizontalSegments; w++)
             {
-                for (int h = 0; h < SegmentVerticalCount; h++)
+                for (int h = 0; h < Configuration.Keyboard.keys.Count; h++)
                 {
-                    var component = new Panel();
-                    component.Name = "Grid_" + w + "_" + h;
-                    component.Location = new System.Drawing.Point(w * SegmentWidth, h * SegmentHeight);
-                    component.Size = new System.Drawing.Size(SegmentWidth, SegmentHeight);
-                    component.BackColor = System.Drawing.Color.FromArgb(255, 0, 0);
+                    var component = new NotePanel();
+                    component.Location = new System.Drawing.Point(
+                        (w + 1) * Configuration.Keyboard.keyPanelWidth, h * Configuration.Keyboard.keyPanelHeight);
+                    component.Size = GetSize();
                     component.BorderStyle = BorderStyle.FixedSingle;
-                    KeyboardContainer.Controls.Add(component);
+                    Controls.Add(component);
                 }
             }
 
-            // Zatwierdzenie dodanych wyżej kontrolek
-            KeyboardContainer.ResumeLayout();
-            KeyboardContainer.PerformLayout();
+            ResumeLayout();
         }
 
-        private void VScroll_Scroll(object sender, ScrollEventArgs e)
+        /// <summary>
+        /// Tworzy nagłówek klawiatury prezentujący nazwy klawiszy
+        /// </summary>
+        /// <returns>Maksymalna szerokość nagłówka</returns>
+        private void BuildKeyboardHeader()
         {
-            throw new NotImplementedException();
+            for (var i = 0; i < Configuration.Keyboard.keys.Count; i++)
+            {
+                var key = Configuration.Keyboard.keys[i];
+                var label = new Label();
+                label.Name = "Label_" + key.name;
+                label.Location = new System.Drawing.Point(0, i * Configuration.Keyboard.keyPanelHeight);
+                label.Size = GetSize();
+                label.Text = key.name;
+                Controls.Add(label);
+            }
+        }
+
+        private System.Drawing.Size GetSize()
+        {
+            return new System.Drawing.Size(
+                        Configuration.Keyboard.keyPanelWidth, Configuration.Keyboard.keyPanelHeight);
         }
     }
 }

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.KeyboardContainer = new System.Windows.Forms.Panel();
+            this.keyboardGrid1 = new Synthesizer.Views.KeyboardGrid();
             this.SuspendLayout();
             // 
             // button1
@@ -42,21 +42,21 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // KeyboardContainer
+            // keyboardGrid1
             // 
-            this.KeyboardContainer.AutoScroll = true;
-            this.KeyboardContainer.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.KeyboardContainer.Location = new System.Drawing.Point(12, 274);
-            this.KeyboardContainer.Name = "KeyboardContainer";
-            this.KeyboardContainer.Size = new System.Drawing.Size(776, 164);
-            this.KeyboardContainer.TabIndex = 1;
+            this.keyboardGrid1.AutoScroll = true;
+            this.keyboardGrid1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.keyboardGrid1.Location = new System.Drawing.Point(12, 267);
+            this.keyboardGrid1.Name = "keyboardGrid1";
+            this.keyboardGrid1.Size = new System.Drawing.Size(776, 171);
+            this.keyboardGrid1.TabIndex = 1;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.KeyboardContainer);
+            this.Controls.Add(this.keyboardGrid1);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -67,7 +67,7 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel KeyboardContainer;
+        private Views.KeyboardGrid keyboardGrid1;
     }
 }
 
