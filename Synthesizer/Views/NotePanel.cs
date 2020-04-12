@@ -9,6 +9,8 @@ namespace Synthesizer.Views
     /// </summary>
     class NotePanel : Panel
     {
+        public StateChange OnStateChange { get; set; }
+
         private bool state = false;
 
         public NotePanel()
@@ -20,6 +22,7 @@ namespace Synthesizer.Views
         {
             base.OnClick(e);
             state = !state;
+            OnStateChange?.Invoke(state);
             UpdateColor();
         }
 
@@ -27,5 +30,7 @@ namespace Synthesizer.Views
         {
             BackColor = state ? Keyboard.activeNoteColor : Keyboard.inactiveNoteColor;
         }
+
+        public delegate void StateChange(bool newState);
     }
 }

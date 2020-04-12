@@ -4,6 +4,8 @@ namespace Synthesizer.Views
 {
     class KeyboardGrid : Panel
     {
+        public GridUpdate OnGridUpdate { get; set; }
+
         public KeyboardGrid()
         {
             AutoScroll = true;
@@ -20,12 +22,17 @@ namespace Synthesizer.Views
             {
                 for (int h = 0; h < Configuration.Keyboard.keys.Count; h++)
                 {
-                    var component = new NotePanel();
-                    component.Location = new System.Drawing.Point(
+                    var panel = new NotePanel();
+                    panel.Location = new System.Drawing.Point(
                         (w + 1) * Configuration.Keyboard.keyPanelWidth, h * Configuration.Keyboard.keyPanelHeight);
-                    component.Size = GetSize();
-                    component.BorderStyle = BorderStyle.FixedSingle;
-                    Controls.Add(component);
+                    panel.Size = GetSize();
+                    panel.BorderStyle = BorderStyle.FixedSingle;
+                    Controls.Add(panel);
+
+                    // W celu utworzenia domknięcia wymagane jest zadeklarowanie nowych zmiennych
+                    int cw = w;
+                    int ch = h;
+                    panel.OnStateChange = (newState) => OnGridUpdate?.Invoke(ch, cw, newState);
                 }
             }
 
@@ -55,5 +62,7 @@ namespace Synthesizer.Views
             return new System.Drawing.Size(
                         Configuration.Keyboard.keyPanelWidth, Configuration.Keyboard.keyPanelHeight);
         }
+
+        public delegate void GridUpdate(int row, int column, bool state);
     }
 }

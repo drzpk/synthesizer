@@ -63,6 +63,19 @@ namespace Synthesizer.Configuration
             new Key("H5", 987.77),
             new Key("C6", 1046.50)
         };
+
+        /// <summary>
+        /// Przechowuje dostępne wartości metrum
+        /// </summary>
+        public static readonly List<Meter> meters = new List<Meter>
+        {
+            new Meter(2, Meter.Type.QUARTER),
+            new Meter(3, Meter.Type.QUARTER),
+            new Meter(4, Meter.Type.QUARTER),
+            new Meter(3, Meter.Type.EIGHT),
+            new Meter(5, Meter.Type.EIGHT),
+            new Meter(6, Meter.Type.EIGHT)
+        };
     }
 
     public class Key
@@ -74,6 +87,28 @@ namespace Synthesizer.Configuration
         {
             this.name = name;
             this.frequency = frequency;
+        }
+    }
+
+    public class Meter
+    {
+        public readonly int value;
+        public readonly Type type;
+
+        public Meter(int value, Type type)
+        {
+            this.value = value;
+            this.type = type;
+        }
+
+        public override string ToString()
+        {
+            return value.ToString() + "/" + (int)type;
+        }
+
+        public enum Type
+        {
+            QUARTER = 4, EIGHT = 8
         }
     }
 }
