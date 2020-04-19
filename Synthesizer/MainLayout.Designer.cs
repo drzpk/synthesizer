@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otwórzToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,26 +38,26 @@
             this.pomocToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.oProgramioeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackLengthLabel = new System.Windows.Forms.Label();
-            this.speedLabel = new System.Windows.Forms.Label();
+            this.TempoLabel = new System.Windows.Forms.Label();
             this.rythmLabel = new System.Windows.Forms.Label();
             this.meterBox = new System.Windows.Forms.ComboBox();
             this.playPauseButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
+            this.StatusBar = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TrackStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Tempo = new Synthesizer.Views.NumberBox();
+            this.TrackLength = new Synthesizer.Views.NumberBox();
             this.positionSlider1 = new Synthesizer.Views.PositionSlider();
             this.keyboardGrid = new Synthesizer.Views.KeyboardGrid();
-            this.keyboardBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.keyboardBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.keyboardBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource2)).BeginInit();
+            this.StatusBar.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
             // 
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(800, 24);
+            this.mainMenu.Size = new System.Drawing.Size(802, 24);
             this.mainMenu.TabIndex = 2;
             this.mainMenu.Text = "Menu";
             // 
@@ -126,14 +125,14 @@
             this.trackLengthLabel.TabIndex = 3;
             this.trackLengthLabel.Text = "Długość ścieżki:";
             // 
-            // speedLabel
+            // TempoLabel
             // 
-            this.speedLabel.AutoSize = true;
-            this.speedLabel.Location = new System.Drawing.Point(24, 73);
-            this.speedLabel.Name = "speedLabel";
-            this.speedLabel.Size = new System.Drawing.Size(55, 13);
-            this.speedLabel.TabIndex = 4;
-            this.speedLabel.Text = "Prędkość:";
+            this.TempoLabel.AutoSize = true;
+            this.TempoLabel.Location = new System.Drawing.Point(24, 73);
+            this.TempoLabel.Name = "TempoLabel";
+            this.TempoLabel.Size = new System.Drawing.Size(55, 13);
+            this.TempoLabel.TabIndex = 4;
+            this.TempoLabel.Text = "Prędkość:";
             // 
             // rythmLabel
             // 
@@ -172,6 +171,50 @@
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
             // 
+            // StatusBar
+            // 
+            this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.TrackStatusLabel});
+            this.StatusBar.Location = new System.Drawing.Point(0, 450);
+            this.StatusBar.Name = "StatusBar";
+            this.StatusBar.Size = new System.Drawing.Size(802, 22);
+            this.StatusBar.TabIndex = 12;
+            this.StatusBar.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(33, 17);
+            this.toolStripStatusLabel1.Text = "Stan:";
+            // 
+            // TrackStatusLabel
+            // 
+            this.TrackStatusLabel.Name = "TrackStatusLabel";
+            this.TrackStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // Tempo
+            // 
+            this.Tempo.Location = new System.Drawing.Point(128, 70);
+            this.Tempo.MaxValue = 200;
+            this.Tempo.MinValue = 10;
+            this.Tempo.Name = "Tempo";
+            this.Tempo.Size = new System.Drawing.Size(72, 20);
+            this.Tempo.TabIndex = 11;
+            this.Tempo.Text = "0";
+            this.Tempo.Value = 0;
+            // 
+            // TrackLength
+            // 
+            this.TrackLength.Location = new System.Drawing.Point(128, 46);
+            this.TrackLength.MaxValue = 60;
+            this.TrackLength.MinValue = 10;
+            this.TrackLength.Name = "TrackLength";
+            this.TrackLength.Size = new System.Drawing.Size(72, 20);
+            this.TrackLength.TabIndex = 10;
+            this.TrackLength.Text = "0";
+            this.TrackLength.Value = 0;
+            // 
             // positionSlider1
             // 
             this.positionSlider1.Location = new System.Drawing.Point(48, 234);
@@ -189,38 +232,28 @@
             this.keyboardGrid.Size = new System.Drawing.Size(776, 171);
             this.keyboardGrid.TabIndex = 1;
             // 
-            // keyboardBindingSource1
-            // 
-            this.keyboardBindingSource1.DataSource = typeof(Synthesizer.Configuration.Keyboard);
-            // 
-            // keyboardBindingSource
-            // 
-            this.keyboardBindingSource.DataSource = typeof(Synthesizer.Configuration.Keyboard);
-            // 
-            // keyboardBindingSource2
-            // 
-            this.keyboardBindingSource2.DataSource = typeof(Synthesizer.Configuration.Keyboard);
-            // 
             // MainLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(802, 472);
+            this.Controls.Add(this.StatusBar);
+            this.Controls.Add(this.Tempo);
+            this.Controls.Add(this.TrackLength);
             this.Controls.Add(this.positionSlider1);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.playPauseButton);
             this.Controls.Add(this.meterBox);
             this.Controls.Add(this.rythmLabel);
-            this.Controls.Add(this.speedLabel);
+            this.Controls.Add(this.TempoLabel);
             this.Controls.Add(this.trackLengthLabel);
             this.Controls.Add(this.keyboardGrid);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
             this.Name = "MainLayout";
             this.Text = "Synthesizer";
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.keyboardBindingSource2)).EndInit();
+            this.StatusBar.ResumeLayout(false);
+            this.StatusBar.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -238,15 +271,17 @@
         private System.Windows.Forms.ToolStripMenuItem pomocToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem oProgramioeToolStripMenuItem;
         private System.Windows.Forms.Label trackLengthLabel;
-        private System.Windows.Forms.Label speedLabel;
+        private System.Windows.Forms.Label TempoLabel;
         private System.Windows.Forms.Label rythmLabel;
         private System.Windows.Forms.ComboBox meterBox;
-        private System.Windows.Forms.BindingSource keyboardBindingSource;
-        private System.Windows.Forms.BindingSource keyboardBindingSource1;
-        private System.Windows.Forms.BindingSource keyboardBindingSource2;
         private System.Windows.Forms.Button playPauseButton;
         private System.Windows.Forms.Button stopButton;
         private Views.PositionSlider positionSlider1;
+        private Views.NumberBox TrackLength;
+        private Views.NumberBox Tempo;
+        private System.Windows.Forms.StatusStrip StatusBar;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel TrackStatusLabel;
     }
 }
 

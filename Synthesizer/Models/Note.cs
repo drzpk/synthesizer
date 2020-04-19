@@ -22,6 +22,16 @@ namespace Synthesizer.Models
         private const short BITS_PER_SAMPLE = 16;
         private const int WAVE_SIZE = 4;
 
+        public int DurationMs
+        {
+            get { return durationMs; }
+            set
+            {
+                durationMs = value;
+                GenerateSound();
+            }
+        }
+
         private double frequency;
         private int durationMs;
         private UInt16 volume;
@@ -32,7 +42,7 @@ namespace Synthesizer.Models
         public Note(double frequency, int durationMs, UInt16 volume)
         {
             this.frequency = frequency;
-            this.durationMs = durationMs;
+            this.DurationMs = durationMs;
             this.volume = volume;
 
             GenerateSound();
@@ -56,7 +66,7 @@ namespace Synthesizer.Models
         private void GenerateSound()
         {
             if (soundStream != null)
-                soundStream.Dispose();  
+                soundStream.Dispose();
             soundStream = new MemoryStream();
 
             // Trzeci parametr oznacza, że strumień "soundStream" nie zostanie zamknięty

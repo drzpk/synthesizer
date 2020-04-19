@@ -15,9 +15,25 @@ namespace Synthesizer.Models
     /// </summary>
     class Line
     {
+        public int NoteDurationMs
+        {
+            get { return noteDurationMs; }
+            set
+            {
+                noteDurationMs = value;
+                note.DurationMs = value;
+            }
+        }
+
         private Note note;
         private bool[] states;
         private int noteDurationMs;
+
+        /// <summary>
+        /// Indeks ostatniego aktywnego dźwięku, używany do określenia,
+        /// czy wszystkie dźwięki na linii zostały już odtworzone.
+        /// </summary>
+        private int lastNoteIndex = -1;
 
         /// <summary>
         /// Konstruktor
@@ -37,10 +53,13 @@ namespace Synthesizer.Models
         /// Odtwarza dany dźwięk ze ścieżki w tle
         /// </summary>
         /// <param name="noteIndex"></param>
-        public void Play(int noteIndex)
+        /// <returns>Czy linia nie została wyczerpana (czy są jeszcze dalsze dźwięki do odtworzenia)</returns>
+        public bool Play(int noteIndex)
         {
             if (states[noteIndex])
                 note.Play();
+
+            return noteIndex < lastNoteIndex;
         }
 
         /// <summary>
@@ -51,6 +70,25 @@ namespace Synthesizer.Models
         public void SetState(int noteIndex, bool state)
         {
             states[noteIndex] = state;
+
+            if (state && noteIndex > lastNoteIndex || !state)
+                UpdateLastNoteIndex();
+        }
+
+        public void Resize(int newSize)
+        {
+            Array.Resize(ref states, newSize);
+            UpdateLastNoteIndex();
+        }
+
+        private void UpdateLastNoteIndex()
+        {
+            lastNoteIndex = -1;
+            for (int i = 0; i < states.Length; i++)
+            {
+                if (states[i])
+                    lastNoteIndex = i;
+            }
         }
     }
 }

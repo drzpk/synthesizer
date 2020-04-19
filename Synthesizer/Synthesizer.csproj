@@ -51,6 +51,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\Application.cs" />
     <Compile Include="Configuration\Keyboard.cs" />
     <Compile Include="MainLayout.cs">
       <SubType>Form</SubType>
@@ -67,6 +68,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\NotePanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\NumberBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Views\PositionSlider.cs">

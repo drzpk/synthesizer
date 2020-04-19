@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace Synthesizer.Models
 {
@@ -8,27 +9,28 @@ namespace Synthesizer.Models
     class Track
     {
         public States State { get; private set; }
+        public StateChangeCallback onStateChange;
 
-        private const int NOTE_DURATION_MS = 1000; // todo
         private const int VOLUME = 15000; // todo
 
-        private int lineLength;
+        private int lineSize;
         private Line[] lines;
+        private int noteDurationMs = 1000;
         private TrackPlayer player;
 
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="length">Długość ścieżki (ilość dźwięków)</param>
-        public Track(int length)
+        /// <param name="size">Początkowa długość ścieżki (ilość dźwięków)</param>
+        public Track(int size)
         {
-            this.lineLength = length;
+            lineSize = size;
             State = States.STOPPED;
 
             var keys = Configuration.Keyboard.keys;
             lines = new Line[keys.Count];
             for (int i = 0; i < keys.Count; i++)
-                lines[i] = new Line(length, keys[i].frequency, NOTE_DURATION_MS, VOLUME);
+                lines[i] = new Line(size, keys[i].frequency, noteDurationMs, VOLUME);
         }
 
         /// <summary>
@@ -36,30 +38,36 @@ namespace Synthesizer.Models
         /// </summary>
         public void Play()
         {
-            if (State == States.PLAYING)
-                return;
-            State = States.PLAYING;
-
-            player = new TrackPlayer(lineLength, lines, NOTE_DURATION_MS);
-            new Thread(player.Worker).Start();
+            switch (State)
+            {
+                case States.STOPPED:
+                    player = new TrackPlayer(lineSize, lines, noteDurationMs, Stop);
+                    new Thread(player.Worker).Start();
+                    UpdateState(States.PLAYING);
+                    break;
+                case States.PAUSED:
+                    player.Start();
+                    UpdateState(States.PLAYING);
+                    break;
+            }
         }
 
         public void Pause()
         {
             if (State == States.PAUSED)
                 return;
-            State = States.PAUSED;
 
             player.Pause();
+            UpdateState(States.PAUSED);
         }
 
         public void Stop()
         {
             if (State == States.STOPPED)
                 return;
-            State = States.STOPPED;
 
             player.Stop();
+            UpdateState(States.STOPPED);
         }
 
         /// <summary>
@@ -75,12 +83,44 @@ namespace Synthesizer.Models
             line.SetState(noteIndex, state);
         }
 
+        /// <summary>
+        /// Zmienia długość ścieżki
+        /// </summary>
+        public void Resize(int newSize)
+        {
+            if (newSize < 1)
+                throw new ArgumentOutOfRangeException("Rozmiar ścieżki musi być > 0");
+
+            foreach (var line in lines)
+                line.Resize(newSize);
+            lineSize = newSize;
+        }
+
+        /// <summary>
+        /// Ustawia tempo
+        /// </summary>
+        /// <param name="bpm">Wartość tempa (uderzenia na sekundę)</param>
+        public void SetTempo(int bpm)
+        {
+            noteDurationMs = (int) Math.Floor(60.0 / bpm * 1000);
+            foreach (var line in lines)
+                line.NoteDurationMs = noteDurationMs;
+        }
+
+        private void UpdateState(States newState)
+        {
+            State = newState;
+            onStateChange?.Invoke(newState);
+        }
+
         public enum States
         {
             PLAYING,
             PAUSED,
             STOPPED
         }
+
+        public delegate void StateChangeCallback(States newState);
 
         private class TrackPlayer
         {
@@ -92,9 +132,10 @@ namespace Synthesizer.Models
             private int lineLength;
             private Line[] lines;
             private int noteDurationMs;
+            InterruptCallcack onInterrupt;
             private int currentNoteIndex;
 
-            public TrackPlayer(int lineLength, Line[] lines, int noteDurationMs)
+            public TrackPlayer(int lineLength, Line[] lines, int noteDurationMs, InterruptCallcack onInterrupt)
             {
                 playing = true;
                 running = true;
@@ -102,6 +143,7 @@ namespace Synthesizer.Models
                 this.lineLength = lineLength;
                 this.lines = lines;
                 this.noteDurationMs = noteDurationMs;
+                this.onInterrupt = onInterrupt;
             }
 
             public void Start()
@@ -133,14 +175,25 @@ namespace Synthesizer.Models
                             continue;
                         }
 
+                        bool hasMoreNotes = false;
                         foreach (var line in lines)
-                            line.Play(currentNoteIndex);
+                            hasMoreNotes |= line.Play(currentNoteIndex);
 
-                        Thread.Sleep(noteDurationMs);
+                        // Nie czekaj (wywołaj onInterrupt natychmiast), jeśli nie był odtworzony
+                        // żaden dźwięk.
+                        if (hasMoreNotes || currentNoteIndex > 0)
+                            Thread.Sleep(noteDurationMs);
+
+                        if (!hasMoreNotes)
+                            onInterrupt.Invoke();
+
                         currentNoteIndex++;
                     }
+
                 }
             }
+
+            public delegate void InterruptCallcack();
         }
     }
 }
