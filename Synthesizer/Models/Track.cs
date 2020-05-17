@@ -10,6 +10,13 @@ namespace Synthesizer.Models
     {
         public States State { get; private set; }
         public StateChangeCallback onStateChange;
+        public int CurrentNoteIndex
+        {
+            get
+            {
+                return player.currentNoteIndex;
+            }
+        }
 
         private const int VOLUME = 15000; // todo
 
@@ -102,15 +109,16 @@ namespace Synthesizer.Models
         /// <param name="bpm">Wartość tempa (uderzenia na sekundę)</param>
         public void SetTempo(int bpm)
         {
-            noteDurationMs = (int) Math.Floor(60.0 / bpm * 1000);
+            noteDurationMs = (int)Math.Floor(60.0 / bpm * 1000);
             foreach (var line in lines)
                 line.NoteDurationMs = noteDurationMs;
         }
 
         private void UpdateState(States newState)
         {
+            var oldState = State;
             State = newState;
-            onStateChange?.Invoke(newState);
+            onStateChange?.Invoke(newState, oldState);
         }
 
         public enum States
@@ -120,7 +128,7 @@ namespace Synthesizer.Models
             STOPPED
         }
 
-        public delegate void StateChangeCallback(States newState);
+        public delegate void StateChangeCallback(States newState, States oldState);
 
         private class TrackPlayer
         {
@@ -133,7 +141,7 @@ namespace Synthesizer.Models
             private Line[] lines;
             private int noteDurationMs;
             InterruptCallcack onInterrupt;
-            private int currentNoteIndex;
+            internal int currentNoteIndex;
 
             public TrackPlayer(int lineLength, Line[] lines, int noteDurationMs, InterruptCallcack onInterrupt)
             {

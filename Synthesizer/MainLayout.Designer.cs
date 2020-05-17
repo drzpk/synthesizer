@@ -46,9 +46,9 @@
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.TrackStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.positionMarkerOverlay = new Synthesizer.Views.PositionMarkerOverlay();
             this.Tempo = new Synthesizer.Views.NumberBox();
             this.TrackLength = new Synthesizer.Views.NumberBox();
-            this.positionSlider1 = new Synthesizer.Views.PositionSlider();
             this.keyboardGrid = new Synthesizer.Views.KeyboardGrid();
             this.StatusBar.SuspendLayout();
             this.SuspendLayout();
@@ -193,6 +193,14 @@
             this.TrackStatusLabel.Name = "TrackStatusLabel";
             this.TrackStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // positionMarkerOverlay
+            // 
+            this.positionMarkerOverlay.BackColor = System.Drawing.Color.Transparent;
+            this.positionMarkerOverlay.Location = new System.Drawing.Point(12, 247);
+            this.positionMarkerOverlay.Name = "positionMarkerOverlay";
+            this.positionMarkerOverlay.Size = new System.Drawing.Size(776, 14);
+            this.positionMarkerOverlay.TabIndex = 13;
+            // 
             // Tempo
             // 
             this.Tempo.Location = new System.Drawing.Point(128, 70);
@@ -215,13 +223,6 @@
             this.TrackLength.Text = "0";
             this.TrackLength.Value = 0;
             // 
-            // positionSlider1
-            // 
-            this.positionSlider1.Location = new System.Drawing.Point(48, 234);
-            this.positionSlider1.Name = "positionSlider1";
-            this.positionSlider1.Size = new System.Drawing.Size(722, 27);
-            this.positionSlider1.TabIndex = 9;
-            // 
             // keyboardGrid
             // 
             this.keyboardGrid.AutoScroll = true;
@@ -237,10 +238,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 472);
+            this.Controls.Add(this.positionMarkerOverlay);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.Tempo);
             this.Controls.Add(this.TrackLength);
-            this.Controls.Add(this.positionSlider1);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.playPauseButton);
             this.Controls.Add(this.meterBox);
@@ -276,12 +277,12 @@
         private System.Windows.Forms.ComboBox meterBox;
         private System.Windows.Forms.Button playPauseButton;
         private System.Windows.Forms.Button stopButton;
-        private Views.PositionSlider positionSlider1;
         private Views.NumberBox TrackLength;
         private Views.NumberBox Tempo;
         private System.Windows.Forms.StatusStrip StatusBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel TrackStatusLabel;
+        private Views.PositionMarkerOverlay positionMarkerOverlay;
     }
 }
 

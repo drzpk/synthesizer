@@ -1,4 +1,5 @@
 ﻿using Synthesizer.Models;
+using Synthesizer.Views;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -34,6 +35,9 @@ namespace Synthesizer
             stopButton.Image = Properties.Resources.stop;
             stopButton.ImageAlign = ContentAlignment.MiddleCenter;
 
+            // Szerokość etykiet wysokości dźwięku
+            positionMarkerOverlay.SetOffset(Configuration.Keyboard.keyPanelWidth);
+
             PostInitializeKeyboardGrid();
         }
 
@@ -41,6 +45,11 @@ namespace Synthesizer
         {
             keyboardGrid.OnGridUpdate = (int row, int column, bool state) => track.SetState(row, column, state);
             keyboardGrid.ResizeGrid(Configuration.Application.Defaults.TrackLength);
+
+            keyboardGrid.Scroll += delegate (object sender, ScrollEventArgs e)
+            {
+                positionMarkerOverlay.SetOffset(Configuration.Keyboard.keyPanelWidth - keyboardGrid.HorizontalScroll.Value);
+            };
 
             TrackLength.LostFocus += delegate (object sender, EventArgs e)
             {
@@ -80,7 +89,7 @@ namespace Synthesizer
                 track.Pause();
         }
 
-        private void OnTrackStateChange(Track.States newState)
+        private void OnTrackStateChange(Track.States newState, Track.States oldState)
         {
             // Ta metoda może zostać wywołana z innego wątku
             playPauseButton.Invoke((MethodInvoker)delegate
@@ -92,17 +101,26 @@ namespace Synthesizer
                         stopButton.Enabled = true;
                         SetControlsEnabledState(false);
                         TrackStatusLabel.Text = "odtwarzanie";
+                        positionMarkerOverlay.Start(Configuration.Keyboard.keyPanelWidth);
+                        if (oldState == Track.States.PAUSED)
+                        {
+                            var pw = Configuration.Keyboard.keyPanelWidth;
+                            var newPos = (Math.Ceiling((float)(track.CurrentNoteIndex) / pw) + 1) * pw;
+                            positionMarkerOverlay.SetPosition((float)newPos - keyboardGrid.HorizontalScroll.Value);
+                        }
                         break;
                     case Track.States.PAUSED:
                         playPauseButton.Image = Properties.Resources.play;
                         stopButton.Enabled = true;
                         TrackStatusLabel.Text = "pauza";
+                        positionMarkerOverlay.Stop();
                         break;
                     case Track.States.STOPPED:
                         playPauseButton.Image = Properties.Resources.play;
                         stopButton.Enabled = false;
                         SetControlsEnabledState(true);
                         TrackStatusLabel.Text = "zatrzymany";
+                        positionMarkerOverlay.Reset();
                         break;
                 }
             });
