@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.10.0\lib\net35\NAudio.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -53,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Configuration\Application.cs" />
     <Compile Include="Configuration\Keyboard.cs" />
+    <Compile Include="Configuration\Sound.cs" />
     <Compile Include="MainLayout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +66,7 @@
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Track.cs" />
+    <Compile Include="Models\Wave.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\KeyboardGrid.cs">
@@ -92,6 +97,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\Synthesizer.Configuration.Keyboard.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
