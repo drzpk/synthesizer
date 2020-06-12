@@ -61,7 +61,7 @@ namespace Synthesizer.Models
 
         private void CreateWave()
         {
-            wave = new Wave(SignalGeneratorType.Sin, frequency, durationMs);
+            wave = new Wave(SignalGeneratorType.SawTooth, frequency, durationMs);
         }
 
         private void Player()

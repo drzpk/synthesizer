@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otwórzToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,11 +47,15 @@
             this.StatusBar = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.TrackStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.WaveformChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.WaveTypeGroup = new System.Windows.Forms.GroupBox();
             this.positionMarkerOverlay = new Synthesizer.Views.PositionMarkerOverlay();
             this.Tempo = new Synthesizer.Views.NumberBox();
             this.TrackLength = new Synthesizer.Views.NumberBox();
             this.keyboardGrid = new Synthesizer.Views.KeyboardGrid();
             this.StatusBar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WaveformChart)).BeginInit();
+            this.WaveTypeGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -193,6 +198,33 @@
             this.TrackStatusLabel.Name = "TrackStatusLabel";
             this.TrackStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
+            // WaveformChart
+            // 
+            this.WaveformChart.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.Name = "MainArea";
+            this.WaveformChart.ChartAreas.Add(chartArea1);
+            this.WaveformChart.Location = new System.Drawing.Point(6, 117);
+            this.WaveformChart.Name = "WaveformChart";
+            this.WaveformChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+            this.WaveformChart.Size = new System.Drawing.Size(131, 88);
+            this.WaveformChart.TabIndex = 14;
+            this.WaveformChart.Text = "chart1";
+            // 
+            // WaveTypeGroup
+            // 
+            this.WaveTypeGroup.Controls.Add(this.WaveformChart);
+            this.WaveTypeGroup.Location = new System.Drawing.Point(642, 36);
+            this.WaveTypeGroup.Name = "WaveTypeGroup";
+            this.WaveTypeGroup.Size = new System.Drawing.Size(146, 205);
+            this.WaveTypeGroup.TabIndex = 15;
+            this.WaveTypeGroup.TabStop = false;
+            this.WaveTypeGroup.Text = "Typ fali dźwiękowej";
+            // 
             // positionMarkerOverlay
             // 
             this.positionMarkerOverlay.BackColor = System.Drawing.Color.Transparent;
@@ -238,6 +270,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(802, 472);
+            this.Controls.Add(this.WaveTypeGroup);
             this.Controls.Add(this.positionMarkerOverlay);
             this.Controls.Add(this.StatusBar);
             this.Controls.Add(this.Tempo);
@@ -255,6 +288,8 @@
             this.Text = "Synthesizer";
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.WaveformChart)).EndInit();
+            this.WaveTypeGroup.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -283,6 +318,8 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel TrackStatusLabel;
         private Views.PositionMarkerOverlay positionMarkerOverlay;
+        private System.Windows.Forms.DataVisualization.Charting.Chart WaveformChart;
+        private System.Windows.Forms.GroupBox WaveTypeGroup;
     }
 }
 

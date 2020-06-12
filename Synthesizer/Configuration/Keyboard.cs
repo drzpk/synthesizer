@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Synthesizer.Configuration
 {
@@ -25,12 +22,14 @@ namespace Synthesizer.Configuration
         /// <summary>
         /// Kolor panelu reprezentującego wartość rytmiczną nieaktywnej (niegranej) nuty
         /// </summary>
-        public static readonly Color inactiveNoteColor = Color.FromArgb(255, 251, 242);
+        public static readonly Color inactiveNoteColor = Color.FromArgb(255, 251, 242); 
 
-        /// <summary>
-        /// Kolor panelu reprezentującego wartość rytmiczną aktywnej (granej) nuty
-        /// </summary>
-        public static readonly Color activeNoteColor = Color.FromArgb(240, 88, 58);
+        // Kolory dla poszczególnych typów fal dźwiękowych
+        public static readonly Color SineColor = Color.FromArgb(240, 88, 58);
+        public static readonly Color SquareColor = Color.FromArgb(55, 219, 104);
+        public static readonly Color TriangleColor = Color.FromArgb(55, 126, 219);
+        public static readonly Color SawToothColor = Color.FromArgb(232, 172, 7);
+
 
         /// <summary>
         /// Lista dostępnych dźwięków

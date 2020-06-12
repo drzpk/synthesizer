@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using Synthesizer.Models;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace Synthesizer.Views
 {
@@ -7,11 +9,16 @@ namespace Synthesizer.Views
         private const string PanelNamePrefix = "GridPanel_";
 
         public GridUpdate OnGridUpdate { get; set; }
+        /// <summary>
+        /// Typ fali, który zostanie ustawiony w nowo włączanych panelach
+        /// </summary>
+        public WaveType WaveType { get; set; }
 
         private int gridWidth = 0;
 
         public KeyboardGrid()
         {
+            WaveType = WaveType.Sin;
             AutoScroll = true;
         }
 
@@ -44,7 +51,7 @@ namespace Synthesizer.Views
         private void ShrinkGrid(int firstRemovalIndex)
         {
             SuspendLayout();
-            
+
             for (int w = gridWidth - 1; w >= firstRemovalIndex; w--)
             {
                 for (int h = 0; h < Configuration.Keyboard.keys.Count; h++)
@@ -58,7 +65,7 @@ namespace Synthesizer.Views
 
         private void AddPanel(int row, int column)
         {
-            var panel = new NotePanel
+            var panel = new NotePanel(WaveType)
             {
                 Name = PanelNamePrefix + row.ToString() + "_" + column.ToString(),
                 Location = new System.Drawing.Point(
@@ -66,12 +73,17 @@ namespace Synthesizer.Views
                 Size = GetSize(),
                 BorderStyle = BorderStyle.FixedSingle
             };
+
             Controls.Add(panel);
 
             // W celu utworzenia domknięcia wymagane jest zadeklarowanie nowych zmiennych
             int ch = row;
             int cw = column;
-            panel.OnStateChange = (newState) => OnGridUpdate?.Invoke(ch, cw, newState);
+            panel.OnStateChange = (newState, type) =>
+            {
+                OnGridUpdate?.Invoke(ch, cw, newState);
+                return WaveType;
+            };
         }
 
         private void RemovePanel(int row, int column)
@@ -99,10 +111,9 @@ namespace Synthesizer.Views
             }
         }
 
-        private System.Drawing.Size GetSize()
+        private Size GetSize()
         {
-            return new System.Drawing.Size(
-                        Configuration.Keyboard.keyPanelWidth, Configuration.Keyboard.keyPanelHeight);
+            return new Size(Configuration.Keyboard.keyPanelWidth, Configuration.Keyboard.keyPanelHeight);
         }
 
         public delegate void GridUpdate(int row, int column, bool state);

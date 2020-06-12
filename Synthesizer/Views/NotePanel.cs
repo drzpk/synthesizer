@@ -1,5 +1,7 @@
 ﻿using Synthesizer.Configuration;
+using Synthesizer.Models;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace Synthesizer.Views
@@ -12,24 +14,75 @@ namespace Synthesizer.Views
         public bool State { get; set; }
         public StateChange OnStateChange { get; set; }
 
-        public NotePanel()
+        private WaveType waveType;
+
+        public NotePanel(WaveType waveType)
         {
-            UpdateColor();
+            this.waveType = waveType;
+            BackColor = Keyboard.inactiveNoteColor;
+            SetupContextMenu();
         }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
+
+            if (((MouseEventArgs)e).Button != MouseButtons.Left)
+            {
+                // Rekcja tylko na lewy przycisk myszy. Pod prawym jest menu kontekstowe.
+                return;
+            }
+
             State = !State;
-            OnStateChange?.Invoke(State);
-            UpdateColor();
+            if (State)
+            {
+                var newType = OnStateChange?.Invoke(State, null);
+                if (newType != null)
+                    BackColor = newType.Color;
+            }
+            else
+            {
+                BackColor = Keyboard.inactiveNoteColor;
+            }
         }
 
-        private void UpdateColor()
+        private void SetupContextMenu()
         {
-            BackColor = State ? Keyboard.activeNoteColor : Keyboard.inactiveNoteColor;
+            var menu = new ContextMenu();
+            foreach (var type in WaveType.AllTypes)
+            {
+                var item = new MenuItem(type.Name)
+                {
+                    Checked = type == waveType
+                };
+                item.Click += (object sender, EventArgs e) =>
+                {
+                    ClickContextMenuItem(type);
+                };
+                menu.MenuItems.Add(item);
+            }
+            ContextMenu = menu;
         }
 
-        public delegate void StateChange(bool newState);
+        private void ClickContextMenuItem(WaveType selectedType)
+        {
+            if (!State || selectedType == waveType)
+                return;
+
+            var newSelectedIndex = WaveType.AllTypes.IndexOf(selectedType);
+            for (var i = 0; i < ContextMenu.MenuItems.Count; i++)
+                ContextMenu.MenuItems[i].Checked = i == newSelectedIndex;
+
+            BackColor = selectedType.Color;
+            OnStateChange?.Invoke(State, selectedType);
+        }
+
+        /// <summary>
+        /// Wywoływana w momencie zmiany stanu.
+        /// </summary>
+        /// <param name="newState">czy panel jest zaznaczony</param>
+        /// <param name="type">wybrany typ fali</param>
+        /// <returns>Nowy typ fail, który powinien zostać ustawiony, jeśli panel został zaznaczony</returns>
+        public delegate WaveType StateChange(bool newState, WaveType type);
     }
 }

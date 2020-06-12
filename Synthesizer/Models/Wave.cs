@@ -2,7 +2,6 @@
 using NAudio.Wave.SampleProviders;
 using Synthesizer.Configuration;
 using System;
-using System.Diagnostics;
 
 /// <summary>
 /// Wrapper na generator sygnału NAudio pozwalający na stopniowe wyciszanie końca próbki.

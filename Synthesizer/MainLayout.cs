@@ -1,14 +1,18 @@
-﻿using Synthesizer.Models;
+﻿using NAudio.Wave.SampleProviders;
+using Synthesizer.Models;
 using Synthesizer.Views;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Synthesizer
 {
     public partial class MainLayout : Form
     {
         private Track track = new Track(Configuration.Application.Defaults.TrackLength);
+
+        private WaveType waveType = WaveType.Sin;
 
         public MainLayout()
         {
@@ -39,6 +43,8 @@ namespace Synthesizer
             positionMarkerOverlay.SetOffset(Configuration.Keyboard.keyPanelWidth);
 
             PostInitializeKeyboardGrid();
+            InitializeWaveTypeSelector();
+            RefreshWaveformChart(WaveType.Sin);
         }
 
         private void PostInitializeKeyboardGrid()
@@ -63,6 +69,27 @@ namespace Synthesizer
 
             track.SetTempo(Configuration.Application.Defaults.Tempo);
             track.onStateChange = OnTrackStateChange;
+        }
+
+        private void InitializeWaveTypeSelector()
+        {
+            int index = 0;
+            foreach (var type in WaveType.AllTypes)
+            {
+                var radio = new RadioButton
+                {
+                    Text = type.Name,
+                    Checked = index == 0,
+                    Location = new Point(7, 19 + (23 * index++))
+                };
+                radio.CheckedChanged += (object sender, EventArgs e) =>
+                {
+                    if (((RadioButton)sender).Checked)
+                        RefreshWaveformChart(type);
+                };
+
+                WaveTypeGroup.Controls.Add(radio);
+            }
         }
 
         /// <summary>
@@ -135,6 +162,29 @@ namespace Synthesizer
             TrackLength.Enabled = state;
             Tempo.Enabled = state;
             meterBox.Enabled = state;
+        }
+
+        private void RefreshWaveformChart(WaveType type)
+        {
+            waveType = type;
+            keyboardGrid.WaveType = type;
+
+            var series = new Series()
+            {
+                ChartType = SeriesChartType.Line,
+                IsVisibleInLegend = false,
+                Color = type.Color,
+                Legend = null
+            };
+
+            WaveVisualizer.Plot(type).ForEach(t =>
+            {
+                series.Points.AddXY(t.Item1, t.Item2);
+            });
+
+            WaveformChart.Series.Clear();
+            WaveformChart.Series.Add(series);
+            WaveformChart.Invalidate();
         }
 
         private void stopButton_Click(object sender, EventArgs e)

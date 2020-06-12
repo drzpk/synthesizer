@@ -39,6 +39,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -63,6 +64,8 @@
     <Compile Include="MainLayout.Designer.cs">
       <DependentUpon>MainLayout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\WaveType.cs" />
+    <Compile Include="Models\WaveVisualizer.cs" />
     <Compile Include="Models\Line.cs" />
     <Compile Include="Models\Note.cs" />
     <Compile Include="Models\Track.cs" />
