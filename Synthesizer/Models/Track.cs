@@ -83,11 +83,12 @@ namespace Synthesizer.Models
         /// <param name="lineIndex">Indeks linii. Numerowanie według zmiennej Keyboard.keys</param>
         /// <param name="noteIndex">Indeks dźwięku</param>
         /// <param name="state">Nowy stan</param>
+        /// <param name="type">Nowy typ</param>
         /// <see cref="Synthesizer.Configuration.Keyboard.keys"/>
-        public void SetState(int lineIndex, int noteIndex, bool state)
+        public void SetStateAndType(int lineIndex, int noteIndex, bool state, WaveType type)
         {
             var line = lines[lineIndex];
-            line.SetState(noteIndex, state);
+            line.SetStateAndType(noteIndex, state, type);
         }
 
         /// <summary>

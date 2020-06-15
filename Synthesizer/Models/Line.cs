@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Synthesizer.Models
 {
@@ -17,17 +13,19 @@ namespace Synthesizer.Models
     {
         public int NoteDurationMs
         {
-            get { return noteDurationMs; }
+            get { return availableNotes.GetEnumerator().Current.Value.DurationMs; }
             set
             {
-                noteDurationMs = value;
-                note.DurationMs = value;
+                foreach (var entry in availableNotes)
+                {
+                    entry.Value.DurationMs = value;
+                }
             }
         }
 
-        private Note note;
+        private Dictionary<WaveType, Note> availableNotes;
         private bool[] states;
-        private int noteDurationMs;
+        private WaveType[] types;
 
         /// <summary>
         /// Indeks ostatniego aktywnego dźwięku, używany do określenia,
@@ -44,9 +42,15 @@ namespace Synthesizer.Models
         /// <param name="volume">Głośność</param>
         public Line(int size, double frequency, int noteDurationMs, UInt16 volume)
         {
-            note = new Note(frequency, noteDurationMs, volume);
+            availableNotes = new Dictionary<WaveType, Note>();
+            WaveType.AllTypes.ForEach(type =>
+            {
+                var note = new Note(type, frequency, noteDurationMs, volume);
+                availableNotes.Add(type, note);
+            });
+
             states = new bool[size];
-            this.noteDurationMs = noteDurationMs;
+            types = new WaveType[size];
         }
 
         /// <summary>
@@ -57,7 +61,10 @@ namespace Synthesizer.Models
         public bool Play(int noteIndex)
         {
             if (states[noteIndex])
+            {
+                var note = availableNotes[types[noteIndex]];
                 note.Play();
+            }
 
             return noteIndex < lastNoteIndex;
         }
@@ -67,9 +74,11 @@ namespace Synthesizer.Models
         /// </summary>
         /// <param name="noteIndex">pozycja</param>
         /// <param name="state">stan</param>
-        public void SetState(int noteIndex, bool state)
+        /// <param name="type">typ fali</param>
+        public void SetStateAndType(int noteIndex, bool state, WaveType type)
         {
             states[noteIndex] = state;
+            types[noteIndex] = type;
 
             if (state && noteIndex > lastNoteIndex || !state)
                 UpdateLastNoteIndex();
@@ -78,6 +87,7 @@ namespace Synthesizer.Models
         public void Resize(int newSize)
         {
             Array.Resize(ref states, newSize);
+            Array.Resize(ref types, newSize);
             UpdateLastNoteIndex();
         }
 

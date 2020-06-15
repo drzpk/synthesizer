@@ -34,9 +34,10 @@ namespace Synthesizer.Views
             }
 
             State = !State;
+            var newType = OnStateChange?.Invoke(State, null);
+
             if (State)
             {
-                var newType = OnStateChange?.Invoke(State, null);
                 if (newType != null)
                     BackColor = newType.Color;
             }
@@ -80,8 +81,8 @@ namespace Synthesizer.Views
         /// <summary>
         /// Wywoływana w momencie zmiany stanu.
         /// </summary>
-        /// <param name="newState">czy panel jest zaznaczony</param>
-        /// <param name="type">wybrany typ fali</param>
+        /// <param name="newState">czy panel jest zaznaczony, zwracany zawsze</param>
+        /// <param name="type">wybrany typ fali, zwracany tylko wtedy, gdy zostanie zmieniony</param>
         /// <returns>Nowy typ fail, który powinien zostać ustawiony, jeśli panel został zaznaczony</returns>
         public delegate WaveType StateChange(bool newState, WaveType type);
     }

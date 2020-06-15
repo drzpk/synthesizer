@@ -17,21 +17,20 @@ namespace Synthesizer.Models
 
         public readonly Color Color;
         public readonly string Name;
-
-        private SignalGeneratorType type;
+        public readonly SignalGeneratorType Type;
 
         private WaveType(Color color, string name, SignalGeneratorType type)
         {
-            this.Color = color;
-            this.Name = name;
-            this.type = type;
+            Color = color;
+            Name = name;
+            Type = type;
         }
 
         public ISampleProvider GetSampleProvider(int sampleRate, double frequency)
         {
             return new SignalGenerator(sampleRate, 1)
             {
-                Type = type,
+                Type = Type,
                 Frequency = frequency
             };
         }

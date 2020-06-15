@@ -49,7 +49,11 @@ namespace Synthesizer
 
         private void PostInitializeKeyboardGrid()
         {
-            keyboardGrid.OnGridUpdate = (int row, int column, bool state) => track.SetState(row, column, state);
+            keyboardGrid.OnGridUpdate = (int row, int column, bool state, WaveType type) =>
+            {
+                var newType = type ?? waveType;
+                track.SetStateAndType(row, column, state, newType);
+            };
             keyboardGrid.ResizeGrid(Configuration.Application.Defaults.TrackLength);
 
             keyboardGrid.Scroll += delegate (object sender, ScrollEventArgs e)

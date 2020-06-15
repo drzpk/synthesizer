@@ -81,7 +81,7 @@ namespace Synthesizer.Views
             int cw = column;
             panel.OnStateChange = (newState, type) =>
             {
-                OnGridUpdate?.Invoke(ch, cw, newState);
+                OnGridUpdate?.Invoke(ch, cw, newState, type);
                 return WaveType;
             };
         }
@@ -116,6 +116,13 @@ namespace Synthesizer.Views
             return new Size(Configuration.Keyboard.keyPanelWidth, Configuration.Keyboard.keyPanelHeight);
         }
 
-        public delegate void GridUpdate(int row, int column, bool state);
+        /// <summary>
+        /// Wywoływana, gdy panel zmieni stan lub typ dźwięku
+        /// </summary>
+        /// <param name="row">wiersz</param>
+        /// <param name="column">kolumna</param>
+        /// <param name="state">stan, zwracany zawsze</param>
+        /// <param name="newType">nowy typ dźwięku, zwracany tylko, gdy zostanie zmeiniony</param>
+        public delegate void GridUpdate(int row, int column, bool state, WaveType newType);
     }
 }

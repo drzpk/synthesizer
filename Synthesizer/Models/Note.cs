@@ -10,13 +10,22 @@ namespace Synthesizer.Models
     /// </summary>
     class Note
     {
+        public WaveType WaveType
+        {
+            get { return waveType; }
+            set
+            {
+                changed = waveType != value;
+                waveType = value;
+            }
+        }
         public double Frequency
         {
             get { return frequency; }
             set
             {
+                changed = frequency != value;
                 frequency = value;
-                changed = true;
             }
         }
 
@@ -25,19 +34,21 @@ namespace Synthesizer.Models
             get { return durationMs; }
             set
             {
+                changed = durationMs != value;
                 durationMs = value;
-                changed = true;
             }
         }
 
+        private WaveType waveType;
         private double frequency;
         private int durationMs;
 
         private Wave wave;
         private bool changed = false;
 
-        public Note(double frequency, int durationMs, UInt16 volume)
+        public Note(WaveType waveType, double frequency, int durationMs, UInt16 volume)
         {
+            this.waveType = waveType;
             this.frequency = frequency;
             this.DurationMs = durationMs;
 
@@ -61,7 +72,7 @@ namespace Synthesizer.Models
 
         private void CreateWave()
         {
-            wave = new Wave(SignalGeneratorType.SawTooth, frequency, durationMs);
+            wave = new Wave(waveType.Type, frequency, durationMs);
         }
 
         private void Player()
