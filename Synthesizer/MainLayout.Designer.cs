@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otwórzToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,8 +40,6 @@
             this.oProgramioeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.trackLengthLabel = new System.Windows.Forms.Label();
             this.TempoLabel = new System.Windows.Forms.Label();
-            this.rythmLabel = new System.Windows.Forms.Label();
-            this.meterBox = new System.Windows.Forms.ComboBox();
             this.playPauseButton = new System.Windows.Forms.Button();
             this.stopButton = new System.Windows.Forms.Button();
             this.StatusBar = new System.Windows.Forms.StatusStrip();
@@ -53,6 +51,15 @@
             this.Tempo = new Synthesizer.Views.NumberBox();
             this.TrackLength = new Synthesizer.Views.NumberBox();
             this.keyboardGrid = new Synthesizer.Views.KeyboardGrid();
+            this.plikToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemLoad = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.informacjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainMenu.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveformChart)).BeginInit();
             this.WaveTypeGroup.SuspendLayout();
@@ -60,6 +67,9 @@
             // 
             // mainMenu
             // 
+            this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.plikToolStripMenuItem1,
+            this.informacjeToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
             this.mainMenu.Size = new System.Drawing.Size(802, 24);
@@ -139,28 +149,9 @@
             this.TempoLabel.TabIndex = 4;
             this.TempoLabel.Text = "Prędkość:";
             // 
-            // rythmLabel
-            // 
-            this.rythmLabel.AutoSize = true;
-            this.rythmLabel.Location = new System.Drawing.Point(24, 97);
-            this.rythmLabel.Name = "rythmLabel";
-            this.rythmLabel.Size = new System.Drawing.Size(45, 13);
-            this.rythmLabel.TabIndex = 5;
-            this.rythmLabel.Text = "Metrum:";
-            // 
-            // meterBox
-            // 
-            this.meterBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.meterBox.FormattingEnabled = true;
-            this.meterBox.Location = new System.Drawing.Point(128, 94);
-            this.meterBox.Name = "meterBox";
-            this.meterBox.Size = new System.Drawing.Size(72, 21);
-            this.meterBox.TabIndex = 6;
-            // 
             // playPauseButton
             // 
-            this.playPauseButton.Enabled = false;
-            this.playPauseButton.Location = new System.Drawing.Point(295, 153);
+            this.playPauseButton.Location = new System.Drawing.Point(293, 97);
             this.playPauseButton.Name = "playPauseButton";
             this.playPauseButton.Size = new System.Drawing.Size(60, 54);
             this.playPauseButton.TabIndex = 7;
@@ -169,7 +160,7 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(389, 153);
+            this.stopButton.Location = new System.Drawing.Point(378, 97);
             this.stopButton.Name = "stopButton";
             this.stopButton.Size = new System.Drawing.Size(60, 54);
             this.stopButton.TabIndex = 8;
@@ -181,7 +172,7 @@
             this.StatusBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
             this.TrackStatusLabel});
-            this.StatusBar.Location = new System.Drawing.Point(0, 450);
+            this.StatusBar.Location = new System.Drawing.Point(0, 411);
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Size = new System.Drawing.Size(802, 22);
             this.StatusBar.TabIndex = 12;
@@ -201,14 +192,14 @@
             // WaveformChart
             // 
             this.WaveformChart.BackColor = System.Drawing.Color.Transparent;
-            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea1.BackColor = System.Drawing.Color.Transparent;
-            chartArea1.Name = "MainArea";
-            this.WaveformChart.ChartAreas.Add(chartArea1);
-            this.WaveformChart.Location = new System.Drawing.Point(6, 117);
+            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea2.BackColor = System.Drawing.Color.Transparent;
+            chartArea2.Name = "MainArea";
+            this.WaveformChart.ChartAreas.Add(chartArea2);
+            this.WaveformChart.Location = new System.Drawing.Point(152, 19);
             this.WaveformChart.Name = "WaveformChart";
             this.WaveformChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             this.WaveformChart.Size = new System.Drawing.Size(131, 88);
@@ -217,10 +208,11 @@
             // 
             // WaveTypeGroup
             // 
+            this.WaveTypeGroup.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.WaveTypeGroup.Controls.Add(this.WaveformChart);
-            this.WaveTypeGroup.Location = new System.Drawing.Point(642, 36);
+            this.WaveTypeGroup.Location = new System.Drawing.Point(499, 36);
             this.WaveTypeGroup.Name = "WaveTypeGroup";
-            this.WaveTypeGroup.Size = new System.Drawing.Size(146, 205);
+            this.WaveTypeGroup.Size = new System.Drawing.Size(289, 115);
             this.WaveTypeGroup.TabIndex = 15;
             this.WaveTypeGroup.TabStop = false;
             this.WaveTypeGroup.Text = "Typ fali dźwiękowej";
@@ -228,7 +220,7 @@
             // positionMarkerOverlay
             // 
             this.positionMarkerOverlay.BackColor = System.Drawing.Color.Transparent;
-            this.positionMarkerOverlay.Location = new System.Drawing.Point(12, 247);
+            this.positionMarkerOverlay.Location = new System.Drawing.Point(12, 175);
             this.positionMarkerOverlay.Name = "positionMarkerOverlay";
             this.positionMarkerOverlay.Size = new System.Drawing.Size(776, 14);
             this.positionMarkerOverlay.TabIndex = 13;
@@ -257,19 +249,77 @@
             // 
             // keyboardGrid
             // 
+            this.keyboardGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.keyboardGrid.AutoScroll = true;
             this.keyboardGrid.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.keyboardGrid.Location = new System.Drawing.Point(12, 267);
+            this.keyboardGrid.Location = new System.Drawing.Point(12, 195);
             this.keyboardGrid.Name = "keyboardGrid";
             this.keyboardGrid.OnGridUpdate = null;
-            this.keyboardGrid.Size = new System.Drawing.Size(776, 171);
+            this.keyboardGrid.Size = new System.Drawing.Size(776, 201);
             this.keyboardGrid.TabIndex = 1;
+            // 
+            // plikToolStripMenuItem1
+            // 
+            this.plikToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemSave,
+            this.MenuItemSaveAs,
+            this.MenuItemLoad,
+            this.toolStripSeparator2,
+            this.MenuItemExport});
+            this.plikToolStripMenuItem1.Name = "plikToolStripMenuItem1";
+            this.plikToolStripMenuItem1.Size = new System.Drawing.Size(38, 20);
+            this.plikToolStripMenuItem1.Text = "Plik";
+            // 
+            // MenuItemSave
+            // 
+            this.MenuItemSave.Name = "MenuItemSave";
+            this.MenuItemSave.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemSave.Text = "Zapisz";
+            // 
+            // MenuItemSaveAs
+            // 
+            this.MenuItemSaveAs.Name = "MenuItemSaveAs";
+            this.MenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemSaveAs.Text = "Zapisz jako";
+            // 
+            // MenuItemLoad
+            // 
+            this.MenuItemLoad.Name = "MenuItemLoad";
+            this.MenuItemLoad.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemLoad.Text = "Wczytaj";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MenuItemExport
+            // 
+            this.MenuItemExport.Name = "MenuItemExport";
+            this.MenuItemExport.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemExport.Text = "Eksportuj";
+            // 
+            // informacjeToolStripMenuItem
+            // 
+            this.informacjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemAbout});
+            this.informacjeToolStripMenuItem.Name = "informacjeToolStripMenuItem";
+            this.informacjeToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.informacjeToolStripMenuItem.Text = "Informacje";
+            // 
+            // MenuItemAbout
+            // 
+            this.MenuItemAbout.Name = "MenuItemAbout";
+            this.MenuItemAbout.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemAbout.Text = "O programie";
             // 
             // MainLayout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(802, 472);
+            this.ClientSize = new System.Drawing.Size(802, 433);
             this.Controls.Add(this.WaveTypeGroup);
             this.Controls.Add(this.positionMarkerOverlay);
             this.Controls.Add(this.StatusBar);
@@ -277,15 +327,16 @@
             this.Controls.Add(this.TrackLength);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.playPauseButton);
-            this.Controls.Add(this.meterBox);
-            this.Controls.Add(this.rythmLabel);
             this.Controls.Add(this.TempoLabel);
             this.Controls.Add(this.trackLengthLabel);
             this.Controls.Add(this.keyboardGrid);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
+            this.MinimumSize = new System.Drawing.Size(818, 472);
             this.Name = "MainLayout";
             this.Text = "Synthesizer";
+            this.mainMenu.ResumeLayout(false);
+            this.mainMenu.PerformLayout();
             this.StatusBar.ResumeLayout(false);
             this.StatusBar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveformChart)).EndInit();
@@ -308,8 +359,6 @@
         private System.Windows.Forms.ToolStripMenuItem oProgramioeToolStripMenuItem;
         private System.Windows.Forms.Label trackLengthLabel;
         private System.Windows.Forms.Label TempoLabel;
-        private System.Windows.Forms.Label rythmLabel;
-        private System.Windows.Forms.ComboBox meterBox;
         private System.Windows.Forms.Button playPauseButton;
         private System.Windows.Forms.Button stopButton;
         private Views.NumberBox TrackLength;
@@ -320,6 +369,14 @@
         private Views.PositionMarkerOverlay positionMarkerOverlay;
         private System.Windows.Forms.DataVisualization.Charting.Chart WaveformChart;
         private System.Windows.Forms.GroupBox WaveTypeGroup;
+        private System.Windows.Forms.ToolStripMenuItem plikToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemSave;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemSaveAs;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemLoad;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemExport;
+        private System.Windows.Forms.ToolStripMenuItem informacjeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem MenuItemAbout;
     }
 }
 

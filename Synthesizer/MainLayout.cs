@@ -26,14 +26,6 @@ namespace Synthesizer
         /// </summary>
         private void PostInitialize()
         {
-            meterBox.SuspendLayout();
-            foreach (var meter in Configuration.Keyboard.meters)
-            {
-                meterBox.Items.Add(meter.ToString());
-            }
-            meterBox.ResumeLayout();
-            meterBox.SelectedIndexChanged += UpdatePlayButtonState;
-
             playPauseButton.Image = Properties.Resources.play;
             playPauseButton.ImageAlign = ContentAlignment.MiddleCenter;
             stopButton.Image = Properties.Resources.stop;
@@ -105,13 +97,6 @@ namespace Synthesizer
             Tempo.Text = Configuration.Application.Defaults.Tempo.ToString();
         }
 
-        private void UpdatePlayButtonState(object sender, EventArgs e)
-        {
-            var meterSelected = meterBox.SelectedItem != null;
-
-            playPauseButton.Enabled = meterSelected;
-        }
-
         private void playPauseButton_Click(object sender, EventArgs e)
         {
             if (track.State != Track.States.PLAYING)
@@ -165,7 +150,6 @@ namespace Synthesizer
         {
             TrackLength.Enabled = state;
             Tempo.Enabled = state;
-            meterBox.Enabled = state;
         }
 
         private void RefreshWaveformChart(WaveType type)

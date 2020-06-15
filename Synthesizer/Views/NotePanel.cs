@@ -76,6 +76,7 @@ namespace Synthesizer.Views
 
             BackColor = selectedType.Color;
             OnStateChange?.Invoke(State, selectedType);
+            waveType = selectedType;
         }
 
         /// <summary>
