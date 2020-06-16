@@ -13,8 +13,14 @@ namespace Synthesizer.Views
         /// Typ fali, który zostanie ustawiony w nowo włączanych panelach
         /// </summary>
         public WaveType WaveType { get; set; }
-
-        private int gridWidth = 0;
+        public int GridWidth { get; private set; }
+        public int GridHeight
+        {
+            get
+            {
+                return Configuration.Keyboard.keys.Count;
+            }
+        }
 
         public KeyboardGrid()
         {
@@ -24,12 +30,19 @@ namespace Synthesizer.Views
 
         public void ResizeGrid(int newSize)
         {
-            if (gridWidth < newSize)
-                ExtendGrid(newSize - gridWidth, newSize);
+            if (GridWidth < newSize)
+                ExtendGrid(newSize - GridWidth, newSize);
             else
                 ShrinkGrid(newSize);
 
-            gridWidth = newSize;
+            GridWidth = newSize;
+        }
+
+        public void SetPanelState(int row, int column, bool state, WaveType type)
+        {
+            var panel = GetPanel(row, column);
+            panel.WaveType = type;
+            panel.State = state;
         }
 
         private void ExtendGrid(int startColumn, int endColumn)
@@ -52,7 +65,7 @@ namespace Synthesizer.Views
         {
             SuspendLayout();
 
-            for (int w = gridWidth - 1; w >= firstRemovalIndex; w--)
+            for (int w = GridWidth - 1; w >= firstRemovalIndex; w--)
             {
                 for (int h = 0; h < Configuration.Keyboard.keys.Count; h++)
                 {
@@ -84,6 +97,11 @@ namespace Synthesizer.Views
                 OnGridUpdate?.Invoke(ch, cw, newState, type);
                 return WaveType;
             };
+        }
+
+        private NotePanel GetPanel(int row, int column)
+        {
+            return (NotePanel)Controls.Find(PanelNamePrefix + row.ToString() + "_" + column.ToString(), false)[0];
         }
 
         private void RemovePanel(int row, int column)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
 
 namespace Synthesizer.Models
@@ -10,6 +11,18 @@ namespace Synthesizer.Models
     {
         public States State { get; private set; }
         public StateChangeCallback onStateChange;
+        public int NoteDurationMs
+        {
+            get
+            {
+                return lines[0].NoteDurationMs;
+            }
+            set
+            {
+                foreach (var line in lines)
+                    line.NoteDurationMs = value;
+            }
+        }
         public int CurrentNoteIndex
         {
             get
@@ -19,11 +32,16 @@ namespace Synthesizer.Models
         }
 
         private const int VOLUME = 15000; // todo
+        /// <summary>
+        /// Magiczna liczba dodawana na początku tablicy bajtów podczas zapisywania danych,
+        /// pozwala na wykrycie formatu pliku.
+        /// </summary>
+        private const int MAGIC_NUMBER = 0x38dead11;
 
         private int lineSize;
         private Line[] lines;
-        private int noteDurationMs = 1000;
         private TrackPlayer player;
+        private int tempo;
 
         /// <summary>
         /// Konstruktor
@@ -37,7 +55,7 @@ namespace Synthesizer.Models
             var keys = Configuration.Keyboard.keys;
             lines = new Line[keys.Count];
             for (int i = 0; i < keys.Count; i++)
-                lines[i] = new Line(size, keys[i].frequency, noteDurationMs, VOLUME);
+                lines[i] = new Line(size, keys[i].frequency, 1000, VOLUME);
         }
 
         /// <summary>
@@ -48,7 +66,7 @@ namespace Synthesizer.Models
             switch (State)
             {
                 case States.STOPPED:
-                    player = new TrackPlayer(lineSize, lines, noteDurationMs, Stop);
+                    player = new TrackPlayer(lineSize, lines, NoteDurationMs, Stop);
                     new Thread(player.Worker).Start();
                     UpdateState(States.PLAYING);
                     break;
@@ -91,6 +109,18 @@ namespace Synthesizer.Models
             line.SetStateAndType(noteIndex, state, type);
         }
 
+        public bool GetState(int lineIndex, int noteIndex)
+        {
+            var line = lines[lineIndex];
+            return line.GetState(noteIndex);
+        }
+
+        public WaveType GetWaveType(int lineIndex, int noteIndex)
+        {
+            var line = lines[lineIndex];
+            return line.GetWaveType(noteIndex);
+        }
+
         /// <summary>
         /// Zmienia długość ścieżki
         /// </summary>
@@ -104,15 +134,62 @@ namespace Synthesizer.Models
             lineSize = newSize;
         }
 
+        public int GetSize()
+        {
+            return lineSize;
+        }
+
         /// <summary>
         /// Ustawia tempo
         /// </summary>
         /// <param name="bpm">Wartość tempa (uderzenia na sekundę)</param>
         public void SetTempo(int bpm)
         {
-            noteDurationMs = (int)Math.Floor(60.0 / bpm * 1000);
+            tempo = bpm;
+            NoteDurationMs = (int)Math.Floor(60.0 / bpm * 1000);
             foreach (var line in lines)
-                line.NoteDurationMs = noteDurationMs;
+                line.NoteDurationMs = NoteDurationMs;
+        }
+
+        public int GetTempo()
+        {
+            return tempo;
+        }
+
+        public byte[] Save()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var writer = new BinaryWriter(stream);
+                writer.Write(MAGIC_NUMBER);
+                writer.Write(NoteDurationMs);
+                writer.Write(lines.Length);
+                foreach (var line in lines)
+                {
+                    line.Save(writer);
+                }
+                return stream.ToArray();
+            }
+        }
+
+        public void Load(byte[] data)
+        {
+            using (var stream = new MemoryStream(data))
+            {
+                var reader = new BinaryReader(stream);
+                var number = reader.ReadInt32();
+                if (number != MAGIC_NUMBER)
+                    throw new FileFormatException("Niepoprawny format pliku");
+
+                NoteDurationMs = reader.ReadInt32();
+                var length = reader.ReadInt32();
+                Resize(length);
+
+                for (var i = 0; i < length && i < lines.Length; i++)
+                {
+                    lines[i].Load(reader);
+                }
+            }
         }
 
         private void UpdateState(States newState)

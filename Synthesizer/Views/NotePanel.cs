@@ -11,14 +11,39 @@ namespace Synthesizer.Views
     /// </summary>
     class NotePanel : Panel
     {
-        public bool State { get; set; }
+        public bool State
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                state = value;
+                BackColor = state ? WaveType.Color : Keyboard.inactiveNoteColor;
+            }
+        }
+        public WaveType WaveType
+        {
+            get
+            {
+                return waveType;
+            }
+            set
+            {
+                waveType = value;
+                if (state)
+                    BackColor = waveType.Color;
+            }
+        }
         public StateChange OnStateChange { get; set; }
 
         private WaveType waveType;
+        private bool state;
 
         public NotePanel(WaveType waveType)
         {
-            this.waveType = waveType;
+            WaveType = waveType;
             BackColor = Keyboard.inactiveNoteColor;
             SetupContextMenu();
         }
@@ -33,10 +58,10 @@ namespace Synthesizer.Views
                 return;
             }
 
-            State = !State;
-            var newType = OnStateChange?.Invoke(State, null);
+            state = !state;
+            var newType = OnStateChange?.Invoke(state, null);
 
-            if (State)
+            if (state)
             {
                 if (newType != null)
                     BackColor = newType.Color;
@@ -54,7 +79,7 @@ namespace Synthesizer.Views
             {
                 var item = new MenuItem(type.Name)
                 {
-                    Checked = type == waveType
+                    Checked = type == WaveType
                 };
                 item.Click += (object sender, EventArgs e) =>
                 {
@@ -67,7 +92,7 @@ namespace Synthesizer.Views
 
         private void ClickContextMenuItem(WaveType selectedType)
         {
-            if (!State || selectedType == waveType)
+            if (!state || selectedType == WaveType)
                 return;
 
             var newSelectedIndex = WaveType.AllTypes.IndexOf(selectedType);
@@ -75,7 +100,7 @@ namespace Synthesizer.Views
                 ContextMenu.MenuItems[i].Checked = i == newSelectedIndex;
 
             BackColor = selectedType.Color;
-            OnStateChange?.Invoke(State, selectedType);
+            OnStateChange?.Invoke(state, selectedType);
             waveType = selectedType;
         }
 

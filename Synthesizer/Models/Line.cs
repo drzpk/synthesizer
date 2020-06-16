@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Synthesizer.Models
 {
@@ -13,7 +14,12 @@ namespace Synthesizer.Models
     {
         public int NoteDurationMs
         {
-            get { return availableNotes.GetEnumerator().Current.Value.DurationMs; }
+            get
+            {
+                var enumerator = availableNotes.GetEnumerator();
+                enumerator.MoveNext();
+                return enumerator.Current.Value.DurationMs;
+            }
             set
             {
                 foreach (var entry in availableNotes)
@@ -88,6 +94,46 @@ namespace Synthesizer.Models
         {
             Array.Resize(ref states, newSize);
             Array.Resize(ref types, newSize);
+            UpdateLastNoteIndex();
+        }
+
+        public bool GetState(int noteIndex)
+        {
+            return states[noteIndex];
+        }
+
+        public WaveType GetWaveType(int noteIndex)
+        {
+            return types[noteIndex];
+        }
+
+        public void Save(BinaryWriter writer)
+        {
+            writer.Write(states.Length);
+            for (int i = 0; i < states.Length; i++)
+            {
+                writer.Write(states[i]);
+                if (types[i] != null)
+                    writer.Write((short)WaveType.AllTypes.IndexOf(types[i]));
+                else
+                    writer.Write((short)-1);
+            }
+        }
+
+        public void Load(BinaryReader reader)
+        {
+            int size = reader.ReadInt32();
+            states = new bool[size];
+            types = new WaveType[size];
+
+            for (int i = 0; i < size; i++)
+            {
+                states[i] = reader.ReadBoolean();
+                int typeIndex = reader.ReadInt16();
+                if (typeIndex > -1)
+                    types[i] = WaveType.AllTypes[typeIndex];
+            }
+
             UpdateLastNoteIndex();
         }
 

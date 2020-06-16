@@ -28,8 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
+            this.plikToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemLoad = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
+            this.informacjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.plikToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otwórzToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zapiszToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,14 +59,6 @@
             this.Tempo = new Synthesizer.Views.NumberBox();
             this.TrackLength = new Synthesizer.Views.NumberBox();
             this.keyboardGrid = new Synthesizer.Views.KeyboardGrid();
-            this.plikToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemLoad = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MenuItemExport = new System.Windows.Forms.ToolStripMenuItem();
-            this.informacjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MenuItemAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.StatusBar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.WaveformChart)).BeginInit();
@@ -75,6 +75,64 @@
             this.mainMenu.Size = new System.Drawing.Size(802, 24);
             this.mainMenu.TabIndex = 2;
             this.mainMenu.Text = "Menu";
+            // 
+            // plikToolStripMenuItem1
+            // 
+            this.plikToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemSave,
+            this.MenuItemSaveAs,
+            this.MenuItemLoad,
+            this.toolStripSeparator2,
+            this.MenuItemExport});
+            this.plikToolStripMenuItem1.Name = "plikToolStripMenuItem1";
+            this.plikToolStripMenuItem1.Size = new System.Drawing.Size(38, 20);
+            this.plikToolStripMenuItem1.Text = "Plik";
+            // 
+            // MenuItemSave
+            // 
+            this.MenuItemSave.Name = "MenuItemSave";
+            this.MenuItemSave.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemSave.Text = "Zapisz";
+            this.MenuItemSave.Click += new System.EventHandler(this.MenuItemSave_Click);
+            // 
+            // MenuItemSaveAs
+            // 
+            this.MenuItemSaveAs.Name = "MenuItemSaveAs";
+            this.MenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemSaveAs.Text = "Zapisz jako";
+            this.MenuItemSaveAs.Click += new System.EventHandler(this.MenuItemSaveAs_Click);
+            // 
+            // MenuItemLoad
+            // 
+            this.MenuItemLoad.Name = "MenuItemLoad";
+            this.MenuItemLoad.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemLoad.Text = "Wczytaj";
+            this.MenuItemLoad.Click += new System.EventHandler(this.MenuItemLoad_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MenuItemExport
+            // 
+            this.MenuItemExport.Name = "MenuItemExport";
+            this.MenuItemExport.Size = new System.Drawing.Size(180, 22);
+            this.MenuItemExport.Text = "Eksportuj";
+            // 
+            // informacjeToolStripMenuItem
+            // 
+            this.informacjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MenuItemAbout});
+            this.informacjeToolStripMenuItem.Name = "informacjeToolStripMenuItem";
+            this.informacjeToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.informacjeToolStripMenuItem.Text = "Informacje";
+            // 
+            // MenuItemAbout
+            // 
+            this.MenuItemAbout.Name = "MenuItemAbout";
+            this.MenuItemAbout.Size = new System.Drawing.Size(141, 22);
+            this.MenuItemAbout.Text = "O programie";
             // 
             // plikToolStripMenuItem
             // 
@@ -192,13 +250,13 @@
             // WaveformChart
             // 
             this.WaveformChart.BackColor = System.Drawing.Color.Transparent;
-            chartArea2.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
-            chartArea2.BackColor = System.Drawing.Color.Transparent;
-            chartArea2.Name = "MainArea";
-            this.WaveformChart.ChartAreas.Add(chartArea2);
+            chartArea1.AxisX.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisX2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisY.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.AxisY2.Enabled = System.Windows.Forms.DataVisualization.Charting.AxisEnabled.False;
+            chartArea1.BackColor = System.Drawing.Color.Transparent;
+            chartArea1.Name = "MainArea";
+            this.WaveformChart.ChartAreas.Add(chartArea1);
             this.WaveformChart.Location = new System.Drawing.Point(152, 19);
             this.WaveformChart.Name = "WaveformChart";
             this.WaveformChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
@@ -259,61 +317,6 @@
             this.keyboardGrid.OnGridUpdate = null;
             this.keyboardGrid.Size = new System.Drawing.Size(776, 201);
             this.keyboardGrid.TabIndex = 1;
-            // 
-            // plikToolStripMenuItem1
-            // 
-            this.plikToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemSave,
-            this.MenuItemSaveAs,
-            this.MenuItemLoad,
-            this.toolStripSeparator2,
-            this.MenuItemExport});
-            this.plikToolStripMenuItem1.Name = "plikToolStripMenuItem1";
-            this.plikToolStripMenuItem1.Size = new System.Drawing.Size(38, 20);
-            this.plikToolStripMenuItem1.Text = "Plik";
-            // 
-            // MenuItemSave
-            // 
-            this.MenuItemSave.Name = "MenuItemSave";
-            this.MenuItemSave.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemSave.Text = "Zapisz";
-            // 
-            // MenuItemSaveAs
-            // 
-            this.MenuItemSaveAs.Name = "MenuItemSaveAs";
-            this.MenuItemSaveAs.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemSaveAs.Text = "Zapisz jako";
-            // 
-            // MenuItemLoad
-            // 
-            this.MenuItemLoad.Name = "MenuItemLoad";
-            this.MenuItemLoad.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemLoad.Text = "Wczytaj";
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
-            // 
-            // MenuItemExport
-            // 
-            this.MenuItemExport.Name = "MenuItemExport";
-            this.MenuItemExport.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemExport.Text = "Eksportuj";
-            // 
-            // informacjeToolStripMenuItem
-            // 
-            this.informacjeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MenuItemAbout});
-            this.informacjeToolStripMenuItem.Name = "informacjeToolStripMenuItem";
-            this.informacjeToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-            this.informacjeToolStripMenuItem.Text = "Informacje";
-            // 
-            // MenuItemAbout
-            // 
-            this.MenuItemAbout.Name = "MenuItemAbout";
-            this.MenuItemAbout.Size = new System.Drawing.Size(180, 22);
-            this.MenuItemAbout.Text = "O programie";
             // 
             // MainLayout
             // 
