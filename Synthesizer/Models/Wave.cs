@@ -69,7 +69,5 @@ namespace Synthesizer.Models
 
             return read;
         }
-
-        // todo: metoda zwracająca kompletny bufor danych podczas eksportowania do formatu audio
     }
 }

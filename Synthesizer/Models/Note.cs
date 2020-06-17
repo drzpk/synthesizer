@@ -1,4 +1,6 @@
 ﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using Synthesizer.Configuration;
 using System;
 using System.Threading;
 
@@ -67,6 +69,25 @@ namespace Synthesizer.Models
 
             wave.Reset();
             new Thread(Player).Start();
+        }
+
+        public float[] GenerateSoundData()
+        {
+            var size = GetBufferSize();
+            var buffer = new float[size];
+            wave.Read(buffer, 0, size);
+            return buffer;
+        }
+
+        public float[] GenerateSilence()
+        {
+            var size = GetBufferSize();
+            return new float[size];
+        }
+
+        private int GetBufferSize()
+        {
+            return (int)Math.Floor(durationMs / 1000f * Sound.SampleRateHz);
         }
 
         private void CreateWave()

@@ -119,6 +119,7 @@
             this.MenuItemExport.Name = "MenuItemExport";
             this.MenuItemExport.Size = new System.Drawing.Size(180, 22);
             this.MenuItemExport.Text = "Eksportuj";
+            this.MenuItemExport.Click += new System.EventHandler(this.MenuItemExport_Click);
             // 
             // informacjeToolStripMenuItem
             // 

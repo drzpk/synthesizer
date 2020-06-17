@@ -1,4 +1,7 @@
-﻿using System;
+﻿using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
+using Synthesizer.Configuration;
+using System;
 using System.IO;
 using System.Threading;
 
@@ -189,6 +192,54 @@ namespace Synthesizer.Models
                 {
                     lines[i].Load(reader);
                 }
+            }
+        }
+
+        public byte[] Export()
+        {
+            using (var stream = new MemoryStream())
+            {
+                float[] combined = null;
+                foreach (var line in lines)
+                {
+                    var data = line.GenerateSoundData();
+                    if (combined != null)
+                    {
+                        float[] smaller = data.Length > combined.Length ? combined : data;
+                        float[] bigger = data.Length > combined.Length ? data : combined;
+                        for (var i = 0; i < smaller.Length; i++)
+                            bigger[i] = smaller[i];
+
+                        combined = bigger;
+                    }
+                    else
+                    {
+                        combined = data;
+                    }
+
+                }
+
+                return ConvertToWavFormat(combined);
+            }
+        }
+
+        private byte[] ConvertToWavFormat(float[] input)
+        {
+            // Konwersja danych dźwiękowych do formatu wymaganego przez plik WAV
+            int requiredSamples = input.Length * 4;
+            byte[] soundData = new byte[requiredSamples];
+            var waveBuffer = new WaveBuffer(soundData);
+            for (int i = 0; i < input.Length; i++)
+                waveBuffer.FloatBuffer[i] = input[i];
+
+
+            using (var stream = new MemoryStream())
+            {
+                var format = WaveFormat.CreateIeeeFloatWaveFormat(Sound.SampleRateHz, 1);
+                var writer = new WaveFileWriter(stream, format);
+                writer.WriteSamples(input, 0, input.Length);
+                writer.Close();
+                return stream.ToArray();
             }
         }
 

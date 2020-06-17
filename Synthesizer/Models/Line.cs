@@ -137,6 +137,28 @@ namespace Synthesizer.Models
             UpdateLastNoteIndex();
         }
 
+        public float[] GenerateSoundData()
+        {
+            List<float> result = new List<float>();
+            var silentNote = availableNotes[WaveType.Sin];
+
+            var stream = new MemoryStream();
+            for (int i = 0; i <= lastNoteIndex; i++)
+            {
+                if (!states[i] || types[i] == null)
+                {
+                    result.AddRange(silentNote.GenerateSilence());
+                    continue;
+                }
+
+                var note = availableNotes[types[i]];
+                var data = note.GenerateSoundData();
+                result.AddRange(data);
+            }
+
+            return result.ToArray();
+        }
+
         private void UpdateLastNoteIndex()
         {
             lastNoteIndex = -1;

@@ -275,7 +275,27 @@ namespace Synthesizer
                 return;
             modified = state;
 
-            Text = state ? "Synthesizer - unsaved changes" : "Synthesizer";
+            Text = state ? "Synthesizer - niezapisane zmiany" : "Synthesizer";
+        }
+
+        private void MenuItemExport_Click(object sender, EventArgs e)
+        {
+            var dialog = new SaveFileDialog()
+            {
+                Filter = "WAV files|*.wav",
+                RestoreDirectory = true,
+                OverwritePrompt = true
+            };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            var rawData = track.Export();
+            var stream = dialog.OpenFile();
+            stream.Write(rawData, 0, rawData.Length);
+            stream.Close();
+
+            MessageBox.Show("Plik został zapisany", "Eksport zakończony powodzeniem", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
