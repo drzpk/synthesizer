@@ -10,7 +10,7 @@ namespace Synthesizer.Models
     /// i zawiera konkretne nuty na tej wysokości, które
     /// są odtwarzane w odpowiednim momencie.
     /// </summary>
-    class Line
+    public class Line
     {
         public int NoteDurationMs
         {

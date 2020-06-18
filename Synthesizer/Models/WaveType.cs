@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace Synthesizer.Models
 {
-    class WaveType
+    public class WaveType
     {
         public static readonly WaveType Sin = new WaveType(Keyboard.SineColor, "Sinus", SignalGeneratorType.Sin);
         public static readonly WaveType Square = new WaveType(Keyboard.SquareColor, "Kwadrat", SignalGeneratorType.Square);

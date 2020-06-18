@@ -10,7 +10,7 @@ namespace Synthesizer.Models
     /// <summary>
     /// Reprezentuje ścieżkę dziwiękową. W skład ścieżki wchodzą linie.
     /// </summary>
-    class Track
+    public class Track
     {
         public States State { get; private set; }
         public StateChangeCallback onStateChange;
@@ -118,6 +118,12 @@ namespace Synthesizer.Models
             return line.GetState(noteIndex);
         }
 
+        public WaveType GetType(int lineIndex, int noteIndex)
+        {
+            var line = lines[lineIndex];
+            return line.GetWaveType(noteIndex);
+        }
+
         public WaveType GetWaveType(int lineIndex, int noteIndex)
         {
             var line = lines[lineIndex];
@@ -165,7 +171,8 @@ namespace Synthesizer.Models
             {
                 var writer = new BinaryWriter(stream);
                 writer.Write(MAGIC_NUMBER);
-                writer.Write(NoteDurationMs);
+                writer.Write(tempo);
+                writer.Write(lineSize);
                 writer.Write(lines.Length);
                 foreach (var line in lines)
                 {
@@ -184,14 +191,17 @@ namespace Synthesizer.Models
                 if (number != MAGIC_NUMBER)
                     throw new FileFormatException("Niepoprawny format pliku");
 
-                NoteDurationMs = reader.ReadInt32();
+                SetTempo(reader.ReadInt32());
+                var lineSize = reader.ReadInt32();
+
                 var length = reader.ReadInt32();
-                Resize(length);
 
                 for (var i = 0; i < length && i < lines.Length; i++)
                 {
                     lines[i].Load(reader);
                 }
+
+                Resize(lineSize);
             }
         }
 

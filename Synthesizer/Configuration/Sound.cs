@@ -1,6 +1,6 @@
 ﻿namespace Synthesizer.Configuration
 {
-    class Sound
+    public class Sound
     {
         /// <summary>
         /// Częstotliwość próbkowania dźwięków
