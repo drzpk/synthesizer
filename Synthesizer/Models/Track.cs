@@ -13,7 +13,8 @@ namespace Synthesizer.Models
     public class Track
     {
         public States State { get; private set; }
-        public StateChangeCallback onStateChange;
+        public StateChangeCallback OnStateChange { get; set; }
+        public PositionChangeCallback OnPositionChange { get; set; }
         public int NoteDurationMs
         {
             get
@@ -26,14 +27,7 @@ namespace Synthesizer.Models
                     line.NoteDurationMs = value;
             }
         }
-        public int CurrentNoteIndex
-        {
-            get
-            {
-                return player.currentNoteIndex;
-            }
-        }
-
+        
         private const int VOLUME = 15000; // todo
         /// <summary>
         /// Magiczna liczba dodawana na początku tablicy bajtów podczas zapisywania danych,
@@ -43,8 +37,10 @@ namespace Synthesizer.Models
 
         private int lineSize;
         private Line[] lines;
-        private TrackPlayer player;
         private int tempo;
+
+        private volatile bool playerRunning;
+        private volatile bool playerPlaying;
 
         /// <summary>
         /// Konstruktor
@@ -69,12 +65,11 @@ namespace Synthesizer.Models
             switch (State)
             {
                 case States.STOPPED:
-                    player = new TrackPlayer(lineSize, lines, NoteDurationMs, Stop);
-                    new Thread(player.Worker).Start();
+                    new Thread(StartPlayer).Start();
                     UpdateState(States.PLAYING);
                     break;
                 case States.PAUSED:
-                    player.Start();
+                    playerPlaying = true;
                     UpdateState(States.PLAYING);
                     break;
             }
@@ -85,7 +80,7 @@ namespace Synthesizer.Models
             if (State == States.PAUSED)
                 return;
 
-            player.Pause();
+            playerPlaying = false;
             UpdateState(States.PAUSED);
         }
 
@@ -94,7 +89,7 @@ namespace Synthesizer.Models
             if (State == States.STOPPED)
                 return;
 
-            player.Stop();
+            playerRunning = false;
             UpdateState(States.STOPPED);
         }
 
@@ -233,6 +228,48 @@ namespace Synthesizer.Models
             }
         }
 
+        private void StartPlayer()
+        {
+            const int SLEEP_TIME = 100;
+            int currentNoteIndex = 0;
+            OnPositionChange(currentNoteIndex);
+
+            playerRunning = true;
+            playerPlaying = true;
+
+            while (playerRunning)
+            {
+                Thread.Sleep(SLEEP_TIME);
+                if (playerPlaying)
+                {
+                    if (currentNoteIndex >= lines.Length)
+                    {
+                        playerPlaying = false;
+                        playerRunning = false;
+                        continue;
+                    }
+
+                    bool hasMoreNotes = false;
+                    foreach (var line in lines)
+                        hasMoreNotes |= line.Play(currentNoteIndex);
+
+                    // Nie czekaj (wywołaj onInterrupt natychmiast), jeśli nie był odtworzony żaden dźwięk.
+                    if (hasMoreNotes || currentNoteIndex > 0)
+                        Thread.Sleep(NoteDurationMs);
+
+                    if (!hasMoreNotes)
+                    {
+                        Stop();
+                        break;
+                    }
+
+                    currentNoteIndex++;
+                    OnPositionChange(currentNoteIndex);
+                }
+
+            }
+        }
+
         private byte[] ConvertToWavFormat(float[] input)
         {
             // Konwersja danych dźwiękowych do formatu wymaganego przez plik WAV
@@ -257,7 +294,7 @@ namespace Synthesizer.Models
         {
             var oldState = State;
             State = newState;
-            onStateChange?.Invoke(newState, oldState);
+            OnStateChange?.Invoke(newState, oldState);
         }
 
         public enum States
@@ -269,78 +306,10 @@ namespace Synthesizer.Models
 
         public delegate void StateChangeCallback(States newState, States oldState);
 
-        private class TrackPlayer
-        {
-            private const int SLEEP_TIME = 100;
-
-            private volatile bool playing;
-            private volatile bool running;
-
-            private int lineLength;
-            private Line[] lines;
-            private int noteDurationMs;
-            InterruptCallcack onInterrupt;
-            internal int currentNoteIndex;
-
-            public TrackPlayer(int lineLength, Line[] lines, int noteDurationMs, InterruptCallcack onInterrupt)
-            {
-                playing = true;
-                running = true;
-
-                this.lineLength = lineLength;
-                this.lines = lines;
-                this.noteDurationMs = noteDurationMs;
-                this.onInterrupt = onInterrupt;
-            }
-
-            public void Start()
-            {
-                playing = true;
-            }
-
-            public void Pause()
-            {
-                playing = false;
-            }
-
-            public void Stop()
-            {
-                running = false;
-            }
-
-            public void Worker()
-            {
-                while (running)
-                {
-                    Thread.Sleep(SLEEP_TIME);
-                    if (playing)
-                    {
-                        if (currentNoteIndex >= lineLength)
-                        {
-                            playing = false;
-                            running = false;
-                            continue;
-                        }
-
-                        bool hasMoreNotes = false;
-                        foreach (var line in lines)
-                            hasMoreNotes |= line.Play(currentNoteIndex);
-
-                        // Nie czekaj (wywołaj onInterrupt natychmiast), jeśli nie był odtworzony
-                        // żaden dźwięk.
-                        if (hasMoreNotes || currentNoteIndex > 0)
-                            Thread.Sleep(noteDurationMs);
-
-                        if (!hasMoreNotes)
-                            onInterrupt.Invoke();
-
-                        currentNoteIndex++;
-                    }
-
-                }
-            }
-
-            public delegate void InterruptCallcack();
-        }
+        /// <summary>
+        /// Informuje o pozycji, która jest teraz odtwarzana.
+        /// </summary>
+        /// <param name="noteIndex">indeks dźwięku</param>
+        public delegate void PositionChangeCallback(int noteIndex);
     }
 }

@@ -67,7 +67,8 @@ namespace Synthesizer
             };
 
             track.SetTempo(Configuration.Application.Defaults.Tempo);
-            track.onStateChange = OnTrackStateChange;
+            track.OnStateChange = OnTrackStateChange;
+            track.OnPositionChange = OnTrackPositionChange;
         }
 
         private void InitializeWaveTypeSelector()
@@ -120,12 +121,10 @@ namespace Synthesizer
                         stopButton.Enabled = true;
                         SetControlsEnabledState(false);
                         TrackStatusLabel.Text = "odtwarzanie";
-                        positionMarkerOverlay.Start(Configuration.Keyboard.keyPanelWidth);
+                        positionMarkerOverlay.Start(Configuration.Keyboard.keyPanelWidth * 1000F / track.NoteDurationMs);
                         if (oldState == Track.States.PAUSED)
                         {
-                            var pw = Configuration.Keyboard.keyPanelWidth;
-                            var newPos = (Math.Ceiling((float)(track.CurrentNoteIndex) / pw) + 1) * pw;
-                            positionMarkerOverlay.SetPosition((float)newPos - keyboardGrid.HorizontalScroll.Value);
+                           //
                         }
                         break;
                     case Track.States.PAUSED:
@@ -143,6 +142,12 @@ namespace Synthesizer
                         break;
                 }
             });
+        }
+
+        private void OnTrackPositionChange(int currentPosition)
+        {
+            var pw = Configuration.Keyboard.keyPanelWidth;
+            positionMarkerOverlay.SetPosition(currentPosition * pw - keyboardGrid.HorizontalScroll.Value);
         }
 
         /// <summary>

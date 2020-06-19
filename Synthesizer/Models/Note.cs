@@ -1,5 +1,4 @@
 ﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using Synthesizer.Configuration;
 using System;
 using System.Threading;
@@ -16,7 +15,7 @@ namespace Synthesizer.Models
             get { return waveType; }
             set
             {
-                changed = waveType != value;
+                changed = changed || waveType != value;
                 waveType = value;
             }
         }
@@ -25,7 +24,7 @@ namespace Synthesizer.Models
             get { return frequency; }
             set
             {
-                changed = frequency != value;
+                changed = changed || frequency != value;
                 frequency = value;
             }
         }
@@ -35,7 +34,7 @@ namespace Synthesizer.Models
             get { return durationMs; }
             set
             {
-                changed = durationMs != value;
+                changed = changed || durationMs != value;
                 durationMs = value;
             }
         }
