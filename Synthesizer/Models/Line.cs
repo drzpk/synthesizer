@@ -107,6 +107,10 @@ namespace Synthesizer.Models
             return types[noteIndex];
         }
 
+        /// <summary>
+        /// Zapisuje stan tej linii.
+        /// </summary>
+        /// <param name="writer"></param>
         public void Save(BinaryWriter writer)
         {
             writer.Write(states.Length);
@@ -120,6 +124,10 @@ namespace Synthesizer.Models
             }
         }
 
+        /// <summary>
+        /// Wczytuje i ustawia stan tej linii.
+        /// </summary>
+        /// <param name="reader"></param>
         public void Load(BinaryReader reader)
         {
             int size = reader.ReadInt32();
@@ -137,6 +145,10 @@ namespace Synthesizer.Models
             UpdateLastNoteIndex();
         }
 
+        /// <summary>
+        /// Generuje "surowe" dane dźwiękowe.
+        /// </summary>
+        /// <returns></returns>
         public float[] GenerateSoundData()
         {
             List<float> result = new List<float>();

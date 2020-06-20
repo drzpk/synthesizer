@@ -4,6 +4,11 @@ using System.Windows.Forms;
 
 namespace Synthesizer.Views
 {
+    /// <summary>
+    /// Pole tekstowe przechowujące liczby całkowite w określonym przedziale.
+    /// Wpisanie liczby poza przedziałem spowoduje ustawienie wartości
+    /// z końca przedziału, który jest najbliżej błędnej wartości.
+    /// </summary>
     class NumberBox : TextBox
     {
         [Category(Configuration.Application.CategoryName)]

@@ -84,9 +84,6 @@
     <Compile Include="Views\PositionMarkerOverlay.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Views\PositionSlider.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="MainLayout.resx">
       <DependentUpon>MainLayout.cs</DependentUpon>
     </EmbeddedResource>

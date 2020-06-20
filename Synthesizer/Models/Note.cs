@@ -6,7 +6,7 @@ using System.Threading;
 namespace Synthesizer.Models
 {
     /// <summary>
-    /// Reprezentuje pojedynczą nutę o określonej wysokości, barwie i czasie trwania
+    /// Reprezentuje pojedynczą nutę o określonej wysokości, barwie i czasie trwania.
     /// </summary>
     class Note
     {
@@ -70,6 +70,10 @@ namespace Synthesizer.Models
             new Thread(Player).Start();
         }
 
+        /// <summary>
+        /// Generuje "surowe" dane dźwiękowe.
+        /// </summary>
+        /// <returns></returns>
         public float[] GenerateSoundData()
         {
             var size = GetBufferSize();
@@ -78,6 +82,10 @@ namespace Synthesizer.Models
             return buffer;
         }
 
+        /// <summary>
+        /// Generuje puste, zerowe dane dźwiękowe o identycznym czasie trwania co nuta.
+        /// </summary>
+        /// <returns></returns>
         public float[] GenerateSilence()
         {
             var size = GetBufferSize();

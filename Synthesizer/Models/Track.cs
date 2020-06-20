@@ -1,20 +1,34 @@
 ﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using Synthesizer.Configuration;
 using System;
 using System.IO;
 using System.Threading;
 
+
+/// <summary>
+/// Klasy zawierające logikę biznesową aplikacji
+/// </summary>
 namespace Synthesizer.Models
 {
     /// <summary>
-    /// Reprezentuje ścieżkę dziwiękową. W skład ścieżki wchodzą linie.
+    /// Reprezentuje ścieżkę dziwiękową zawierającą kompletną melodię.
+    /// Ścieżka składa się z linii.
     /// </summary>
     public class Track
     {
+        /// <summary>
+        /// Bieżący stan.
+        /// </summary>
         public States State { get; private set; }
+        /// <summary>
+        /// Listener wywoływany, gdy stan zostanie zmieniony.
+        /// </summary>
         public StateChangeCallback OnStateChange { get; set; }
+        /// <summary>
+        /// Listener wywoływany w momencie zmiany indeksu odtwarzanego dźwięku.
+        /// </summary>
         public PositionChangeCallback OnPositionChange { get; set; }
+
         public int NoteDurationMs
         {
             get
@@ -28,7 +42,7 @@ namespace Synthesizer.Models
             }
         }
         
-        private const int VOLUME = 15000; // todo
+        private const int VOLUME = 15000;
         /// <summary>
         /// Magiczna liczba dodawana na początku tablicy bajtów podczas zapisywania danych,
         /// pozwala na wykrycie formatu pliku.
@@ -160,6 +174,10 @@ namespace Synthesizer.Models
             return tempo;
         }
 
+        /// <summary>
+        /// Zapisuje stan tej ścieżki (serializacja)
+        /// </summary>
+        /// <returns></returns>
         public byte[] Save()
         {
             using (var stream = new MemoryStream())
@@ -177,6 +195,10 @@ namespace Synthesizer.Models
             }
         }
 
+        /// <summary>
+        /// Wczytuje stan i ustawia go w tej ścieżce (deserializacja)
+        /// </summary>
+        /// <param name="data"></param>
         public void Load(byte[] data)
         {
             using (var stream = new MemoryStream(data))
@@ -200,6 +222,10 @@ namespace Synthesizer.Models
             }
         }
 
+        /// <summary>
+        /// Eksportuje ścieżkę do pliku WAV.
+        /// </summary>
+        /// <returns></returns>
         public byte[] Export()
         {
             using (var stream = new MemoryStream())

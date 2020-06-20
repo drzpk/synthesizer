@@ -6,6 +6,9 @@ using System.Drawing;
 
 namespace Synthesizer.Models
 {
+    /// <summary>
+    /// Zawiera dostępne typy fali dźwiękowych
+    /// </summary>
     public class WaveType
     {
         public static readonly WaveType Sin = new WaveType(Keyboard.SineColor, "Sinus", SignalGeneratorType.Sin);

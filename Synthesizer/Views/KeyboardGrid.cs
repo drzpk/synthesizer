@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace Synthesizer.Views
 {
+    /// <summary>
+    /// Matryca, na której znajdują się "kafelki" dźwiękowe.
+    /// </summary>
     class KeyboardGrid : Panel
     {
         private const string PanelNamePrefix = "GridPanel_";

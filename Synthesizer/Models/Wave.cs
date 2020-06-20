@@ -3,12 +3,13 @@ using NAudio.Wave.SampleProviders;
 using Synthesizer.Configuration;
 using System;
 
-/// <summary>
-/// Wrapper na generator sygnału NAudio pozwalający na stopniowe wyciszanie końca próbki.
-/// Pozwala na wyeliminowanie charakterystycznego kliku po zakończeniu odtwarzania danej próbki.
-/// </summary>
+
 namespace Synthesizer.Models
 {
+    /// <summary>
+    /// Wrapper na generator sygnału NAudio pozwalający na stopniowe wyciszanie końca próbki.
+    /// Pozwala na wyeliminowanie charakterystycznego kliku po zakończeniu odtwarzania danej próbki.
+    /// </summary>
     class Wave : ISampleProvider
     {
         public WaveFormat WaveFormat { get { return signalGenerator.WaveFormat; } }

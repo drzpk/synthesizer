@@ -1,4 +1,8 @@
-﻿namespace Synthesizer.Configuration
+﻿
+/// <summary>
+/// Klasy zawierające stałe konfiguracyjne
+/// </summary>
+namespace Synthesizer.Configuration
 {
     class Application
     {
